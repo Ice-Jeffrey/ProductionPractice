@@ -1,6 +1,6 @@
 def getFactors(x):
     l = [1]
-    for i in range(2, x//2):
+    for i in range(2, x//2+1):
         if x % i == 0:
             l.append(i)
             l.append(x//i)

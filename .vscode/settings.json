@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "D:\\DevelopmentTools\\Anaconda3\\envs\\tensorflow\\python.exe",
+    "python.pythonPath": "E:\\Anaconda3\\python.exe",
     "python.testing.pytestArgs": [
         "."
     ],
