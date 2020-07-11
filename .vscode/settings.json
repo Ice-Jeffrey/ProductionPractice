@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "E:\\Anaconda3\\python.exe",
+    "python.pythonPath": "E:\\Anaconda3\\envs\\PaddlePaddle\\python.exe",
     "python.testing.pytestArgs": [
         "."
     ],
