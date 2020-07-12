@@ -96,7 +96,7 @@ def paintBar(datalist, cid):
     # for item in WA:
     #     print(item)
 
-    bar = Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT))
+    bar = Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT, page_title='Accuracy Bar of the Contest whose id is {}'.format(str(cid))))
     bar.set_global_opts(
         title_opts=opts.TitleOpts(title='Accuracy Bar of the Contest whose id is {}'.format(str(cid))),
         yaxis_opts=opts.AxisOpts(name='Accuracy'),
