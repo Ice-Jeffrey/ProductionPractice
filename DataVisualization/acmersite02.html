@@ -7,11 +7,11 @@
 
 </head>
 <body>
-    <div id="7716cc626cc9427382c5bc65af24c7cd" class="chart-container" style="width:900px; height:500px;"></div>
+    <div id="71b3d5c7593f4fadab397b1cd32eddba" class="chart-container" style="width:900px; height:500px;"></div>
     <script>
-        var chart_7716cc626cc9427382c5bc65af24c7cd = echarts.init(
-            document.getElementById('7716cc626cc9427382c5bc65af24c7cd'), 'light', {renderer: 'canvas'});
-        var option_7716cc626cc9427382c5bc65af24c7cd = {
+        var chart_71b3d5c7593f4fadab397b1cd32eddba = echarts.init(
+            document.getElementById('71b3d5c7593f4fadab397b1cd32eddba'), 'light', {renderer: 'canvas'});
+        var option_71b3d5c7593f4fadab397b1cd32eddba = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -736,7 +736,12 @@
                 "AtCoder": true,
                 "\u8ba1\u849c\u5ba2": true,
                 "total": true
-            }
+            },
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14
         }
     ],
     "tooltip": {
@@ -758,6 +763,7 @@
     },
     "xAxis": [
         {
+            "name": "\u6bd4\u8d5b\u5e74\u6708",
             "show": true,
             "scale": false,
             "nameLocation": "end",
@@ -817,6 +823,7 @@
     ],
     "yAxis": [
         {
+            "name": "\u6bd4\u8d5b\u6570\u91cf\u7edf\u8ba1",
             "show": true,
             "scale": false,
             "nameLocation": "end",
@@ -837,9 +844,16 @@
                 }
             }
         }
+    ],
+    "title": [
+        {
+            "text": "\u5404\u5e74\u6708\u6bd4\u8d5b\u6570\u91cf\u7edf\u8ba1",
+            "padding": 5,
+            "itemGap": 10
+        }
     ]
 };
-        chart_7716cc626cc9427382c5bc65af24c7cd.setOption(option_7716cc626cc9427382c5bc65af24c7cd);
+        chart_71b3d5c7593f4fadab397b1cd32eddba.setOption(option_71b3d5c7593f4fadab397b1cd32eddba);
     </script>
 </body>
 </html>

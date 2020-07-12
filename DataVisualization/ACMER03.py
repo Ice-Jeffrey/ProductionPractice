@@ -78,12 +78,17 @@ def paintGraph(datalist):
                 buct[4] += 1
             elif item['school'] == '南通大学':
                 ntu[4] += 1
-        
+    
+    # 对图表进行相应配置
     bar = Bar(init_opts=opts.InitOpts(page_title='现役CF积分Top50队员学校分布情况'))
     bar.add_xaxis(['1~10', '10~20', '20~30', '30~40', '40~50'])
     bar.add_yaxis('北京化工大学', buct)
     bar.add_yaxis('南通大学', ntu)
-    bar.set_global_opts(title_opts=opts.TitleOpts(title='现役CF积分Top50队员学校分布情况'))
+    bar.set_global_opts(
+        title_opts=opts.TitleOpts(title='现役CF积分Top50队员学校分布情况'),
+        xaxis_opts=opts.AxisOpts(name='排名层级'),
+        yaxis_opts=opts.AxisOpts(name='所占人数')
+    )
     bar.render('acmersite03.html')
 
 # 入口函数 

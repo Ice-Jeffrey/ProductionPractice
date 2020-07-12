@@ -82,6 +82,11 @@ def paintGraph(contestInfo, starttime='2017-09', endtime='2020-07'):
             page_title='各年月比赛数量统计'
         )
     )
+    bar.set_global_opts(
+        title_opts=opts.TitleOpts(title='各年月比赛数量统计'),
+        xaxis_opts=opts.AxisOpts(name='比赛年月'),
+        yaxis_opts=opts.AxisOpts(name='比赛数量统计')
+    )
     bar.add_xaxis(x)
     bar.add_yaxis("CodeForces", cf, stack="stack1", category_gap="50%")
     bar.add_yaxis("NowCoder", nc, stack="stack1", category_gap="50%")

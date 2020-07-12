@@ -72,7 +72,7 @@ def getContestAcc(cid):
     return datalist
 
 # 绘制柱状图
-def paintBar(datalist):
+def paintBar(datalist, cid):
     axis = []
     AC = []
     WA = []
@@ -97,7 +97,11 @@ def paintBar(datalist):
     #     print(item)
 
     bar = Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT))
-    bar.set_global_opts(title_opts=opts.TitleOpts(title='Accuracy Bar of the Contest'))
+    bar.set_global_opts(
+        title_opts=opts.TitleOpts(title='Accuracy Bar of the Contest whose id is {}'.format(str(cid))),
+        yaxis_opts=opts.AxisOpts(name='Accuracy'),
+        xaxis_opts=opts.AxisOpts(name='Problem Index', name_location='middle')
+    )
     bar.add_xaxis([x+1 for x in range(len(axis))])
     bar.add_yaxis('AC', AC, stack='stack1', category_gap='50%')
     bar.add_yaxis('WA', WA, stack='stack1', category_gap='50%')
@@ -114,7 +118,7 @@ def paintBar(datalist):
 def buctoj2():
     # cid = int(input())
     ProblemList = getContestAcc(cid=1802)
-    paintBar(ProblemList)
+    paintBar(ProblemList, cid=1802)
 
 if __name__ == "__main__":
     buctoj2()

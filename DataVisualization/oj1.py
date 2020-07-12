@@ -39,14 +39,19 @@ def paintVioliin(data, title):
 
 # 绘制盒图
 def paintBoxPlot(datadict, xtitle, ytitle, title):
-    graph = Boxplot()
+    graph = Boxplot(init_opts=opts.InitOpts(page_title=title))
+    graph.set_global_opts(
+        title_opts=opts.TitleOpts(title=title),
+        yaxis_opts=opts.AxisOpts(name='Accuracy')
+    )
+
     graph.add_xaxis([xtitle])
-    for key, value in datadict.items():
+    for key, value in sorted(datadict.items()):
         # 为了画图的标准性，小于5人的年级图片将不会被加入盒图
         if len(value) > 4:
             graph.add_yaxis(key, graph.prepare_data([value]))
-    graph.set_global_opts(title_opts=opts.TitleOpts(title=title, subtitle=ytitle))
-    graph.render('boxplot.html')
+    
+    graph.render('buctoj2_boxplot.html')
 
 # 爬取排名前50的用户
 def getTop50UsersAccuracy():
@@ -108,7 +113,7 @@ def buctoj1():
     # plt.show()
 
     # 调用函数进行绘制
-    paintVioliin(data=AccuracyList, title='Accuracy Violin Graph of Top50 Users')
+    paintVioliin(data=AccuracyList, title="Accuracy Violin Graph of BUCTOJ's Top50 Users")
 
     # 根据排名前50同学的年级和准确率进行统计
     s = set()
@@ -125,7 +130,7 @@ def buctoj1():
     # print(s, accuracyDict)
 
     # 调用函数绘制盒图
-    paintBoxPlot(datadict=accuracyDict, xtitle='Grades', ytitle='Accuracy', title="Top50 Users' Accuracy BoxPlot")
+    paintBoxPlot(datadict=accuracyDict, xtitle='Grades', ytitle='Accuracy', title="BUCTOJ Top50 Users' Accuracy BoxPlot")
 
 if __name__=="__main__":
     buctoj1()

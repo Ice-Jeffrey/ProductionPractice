@@ -47,7 +47,7 @@ def getCfRatings(sid):
         y.append(js[i-1]['newRating'])
     
     # 绘制折线图
-    line = Line()
+    line = Line(init_opts=opts.InitOpts(page_title='CF ratings of {}'.format(sid)))
     line.set_global_opts(
         title_opts=opts.TitleOpts(title='CF ratings of {}'.format(sid)),
         tooltip_opts=opts.TooltipOpts(is_show=True),
