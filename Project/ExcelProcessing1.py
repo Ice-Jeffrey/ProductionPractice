@@ -67,7 +67,11 @@ def main():
     data = pd.concat([data1, data2], axis=0)
     data.index = [x for x in range(1, data.shape[0]+1)]
     print(data.head())
-    data.to_csv('OutputData/ExcelData1.csv', index=None)
+    data.to_csv(
+        'OutputData/ExcelData1.csv',
+        columns=['学号', '考生姓名', '科目名称', '性别', '专业', '年份', '编程年份', '获奖类别'], 
+        index=False
+    )
 
 if __name__ == "__main__":
     main()

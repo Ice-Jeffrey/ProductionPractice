@@ -4,7 +4,7 @@ import pandas as pd
 
 def main():
     # 加载数据
-    data = pd.read_csv("F:\Codes\ProductionPractice\OutputData\ExcelData.csv")
+    data = pd.read_csv("F:\Codes\ProductionPractice\OutputData\ExcelData1.csv")
 
     # 向data中添加新的特征
     data['国家级一等奖'] = 0
@@ -40,7 +40,15 @@ def main():
             for tempitem in tempdata['获奖类别']:
                 data.loc[index, tempList[tempitem]] += 1
 
-    data.to_csv('OutputData/ExcelData2.csv', index=None)
+    print(data)
+    data.to_csv(
+        'OutputData/ExcelData2.csv', 
+        columns=['学号', '考生姓名', '科目名称', '性别', '专业', '年份', '编程年份', 
+                '国家级一等奖', '国家级二等奖', '国家级三等奖', '国家级优秀奖',
+                '省部级一等奖', '省部级二等奖', '省部级三等奖', '省部级优秀奖', 
+                '获奖类别'], 
+        index=False
+    )
     print("已导出文件")
 
 if __name__ == "__main__":
