@@ -67,7 +67,7 @@ def main():
     data = pd.concat([data1, data2], axis=0)
     data.index = [x for x in range(1, data.shape[0]+1)]
     print(data.head())
-    data.to_csv('OutputData/ExcelData.csv')
+    data.to_csv('OutputData/ExcelData1.csv', index=None)
 
 if __name__ == "__main__":
     main()
