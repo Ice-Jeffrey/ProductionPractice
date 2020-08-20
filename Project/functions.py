@@ -4,8 +4,10 @@ def function1(x):
         return 0
     elif 'Java' in x:
         return 1
-    else:
+    elif 'Python' in x:
         return 2
+    else:
+        return 3
     
 # 性别映射的函数
 def function2(x):
