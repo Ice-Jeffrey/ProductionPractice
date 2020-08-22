@@ -5,7 +5,7 @@ import pandas as pd
 
 def processData(data):
     acmers = pd.read_csv('OutputData/Acmers.csv')
-    stuNos = acmers['stuNo']
+    stuNos = list(acmers['stuNo'])
 
     features = [
         'acRating', 'cfRating', 'jskRating', 
@@ -19,7 +19,8 @@ def processData(data):
 
     for index, item in enumerate(data.values):
         if item[0] in stuNos:
-            data.loc[index, features] = acmers.loc[item[0], features]
+            print(index, item[0])
+            data.loc[index, features] = acmers.loc[stuNos.index(item[0]), features]
     
     return data
 
