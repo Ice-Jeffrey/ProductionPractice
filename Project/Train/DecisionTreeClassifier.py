@@ -7,6 +7,9 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from pydotplus import graph_from_dot_data
+from sklearn.tree import export_graphviz
+
 def getTrainingData():
     # 读入正样本
     positive = pd.read_csv('Data/positive_training.csv')
@@ -67,6 +70,16 @@ def main():
 
         tests = model.predict(Standardized_Testing)
         print(tests)
+
+
+        # 进行决策树的可视化
+        dot_data = export_graphviz(
+            model, filled=True, 
+            feature_names=X.columns,
+            out_file=None
+        )
+        graph = graph_from_dot_data(dot_data)
+        graph.write_png('Visualization/tree' + str(i) + '.png')
         
 if __name__ == "__main__":
     main()
