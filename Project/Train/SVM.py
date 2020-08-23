@@ -7,32 +7,31 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-def getData():
-    drop = [
-        '学号', '考生姓名', '年份', '科目名称',
-        'acRating', 'jskRating', 
-        'acTimes', 'ncTimes', 'jskTimes',
-        'all_ac_aftersolve', 'correct_ac_aftersolve' 
-    ]
-
+def getTrainingData():
     # 读入正样本
-    positive = pd.read_csv('Data/positive_output_data.csv')
-    positive.drop(drop, inplace=True, axis=1)
+    positive = pd.read_csv('Data/PositiveTraining.csv')
+    positive.drop(['学号'], axis=1, inplace=True)
 
     # 读入负样本
-    negative = pd.read_csv('Data/negative_acmer.csv')
-    negative.drop(drop, inplace=True, axis=1)
-    negative['获奖类别'] = 9
+    negative = pd.read_csv('Data/NegativeTraining.csv')
+    negative.drop(['学号'], axis=1, inplace=True)
 
     # 随机打乱负样本顺序
     negative = shuffle(negative)
 
     return positive, negative
 
+def getTestingData():
+    data = pd.read_csv('Data/testing.csv')
+    data.drop(['学号'], axis=1, inplace=True)
+    return data
 
 def main():
-    # 从文件中读入数据
-    positive, negative = getData()
+    # 从文件中读入训练集
+    positive, negative = getTrainingData()
+    
+    # 从文件中读入测试集
+    Testingdata = getTestingData()
 
     # 计算出需要模型的次数
     iter = negative.shape[0] // positive.shape[0]   # iter = 5
@@ -46,18 +45,23 @@ def main():
         # 得到X, y
         y = data['获奖类别']
         X = data.iloc[:, :-1]
+        # X = data.iloc[:, :12]
         # print(X, y)
 
         # 分割训练集与测试集
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # stratify=y)
 
         # 使用svc模型对训练集进行拟合
-        svmModel = svm.SVC(kernel='linear', random_state=1, gamma=0.20, C = 0.2)    ##较小的gamma有较松的决策边界
+        svmModel = svm.SVC(kernel='linear', random_state=1, gamma=0.20, C = 0.6)    ##较小的gamma有较松的决策边界
         svmModel.fit(X_train, y_train)
 
         predictions = svmModel.predict(X_test)
         # print(predictions, end='\t')
-        print(accuracy_score(predictions, y_test))
+        
+        print(i, accuracy_score(predictions, y_test), end='\t')
+
+        tests = svmModel.predict(Testingdata.iloc[:, :-1])
+        print(tests)
         
 
 
