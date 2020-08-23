@@ -3,7 +3,7 @@ import pandas as pd
 
 # 全局变量，选择要去掉的特征
 drop = [
-    '学号', '考生姓名', '年份', '科目名称', '性别', '专业',
+    '考生姓名', '年份', '科目名称', '性别', '专业',
     'acRating', 'jskRating', 
     'acTimes', 'ncTimes', 'jskTimes',
     'all_ac_aftersolve', 'correct_ac_aftersolve' 
@@ -19,7 +19,7 @@ def dataProcess1():
         data.loc[index, '编程年份'] = 2020 - inyear
         data.loc[index, '专业'] = 1
 
-    data.drop(drop[1:], axis=1, inplace=True)
+    data.drop(drop, axis=1, inplace=True)
     data.to_csv('Data/Testing.csv', index=False)
 
 def dataProcess2():
