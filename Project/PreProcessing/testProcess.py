@@ -29,6 +29,7 @@ def dataProcess2():
 
 def dataProcess3():
     data = pd.read_csv('OutputData/negative_acmer.csv')
+    data.loc[:, '获奖类别'] = 9
     data.drop(drop, axis=1, inplace=True)
     data.to_csv('Data/NegativeTraining.csv', index=False)
 
