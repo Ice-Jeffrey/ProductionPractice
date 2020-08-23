@@ -3,7 +3,7 @@ import pandas as pd
 
 # 全局变量，选择要去掉的特征
 drop = [
-    '学号', '考生姓名', '年份', '科目名称', '性别',
+    '学号', '考生姓名', '年份', '科目名称', '性别', '专业',
     'acRating', 'jskRating', 
     'acTimes', 'ncTimes', 'jskTimes',
     'all_ac_aftersolve', 'correct_ac_aftersolve' 
