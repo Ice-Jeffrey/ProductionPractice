@@ -12,11 +12,11 @@ def getData():
         '学号', '考生姓名', '年份', '科目名称',
         'acRating', 'jskRating', 
         'acTimes', 'ncTimes', 'jskTimes',
-        'correct_cf_aftersolve', 'all_ac_aftersolve', 'correct_ac_aftersolve' 
+        'all_ac_aftersolve', 'correct_ac_aftersolve' 
     ]
 
     # 读入正样本
-    positive = pd.read_csv('Data/positive_acmer.csv')
+    positive = pd.read_csv('Data/positive_output_data.csv')
     positive.drop(drop, inplace=True, axis=1)
 
     # 读入负样本
@@ -35,11 +35,12 @@ def main():
     positive, negative = getData()
 
     # 计算出需要模型的次数
-    iter = negative.shape[0] // positive.shape[0]
+    iter = negative.shape[0] // positive.shape[0]   # iter = 5
 
     for i in range(iter):
         # 获得需要的数据
         data = pd.concat([positive, negative.iloc[i * 228: (i+1)*228, :]], axis=0)
+        # data = positive
         data = shuffle(data)
 
         # 得到X, y
@@ -51,11 +52,11 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
 
         # 使用svc模型对训练集进行拟合
-        svmModel = svm.SVC(kernel='linear', random_state=1, gamma=0.20, C=1.0)    ##较小的gamma有较松的决策边界
+        svmModel = svm.SVC(kernel='linear', random_state=1, gamma=0.20, C = 0.2)    ##较小的gamma有较松的决策边界
         svmModel.fit(X_train, y_train)
 
         predictions = svmModel.predict(X_test)
-        print(predictions, end='\t')
+        # print(predictions, end='\t')
         print(accuracy_score(predictions, y_test))
         
 
