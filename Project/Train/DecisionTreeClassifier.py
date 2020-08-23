@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 def getTrainingData():
     # 读入正样本
@@ -48,18 +49,23 @@ def main():
         # print(X, y)
 
         # 分割训练集与测试集
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # stratify=y)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+
+        # 进行标准化
+        scaler = StandardScaler().fit(X_train)
+        Standardized_X_train = scaler.transform(X_train)
+        Standardized_X_test = scaler.transform(X_test)
+
+        scaler = StandardScaler().fit(Testingdata.iloc[:, :-1])
+        Standardized_Testing = scaler.transform(Testingdata.iloc[:, :-1])
 
         # 使用决策树模型对训练集进行拟合
         model = DecisionTreeClassifier(class_weight='balanced')
-        model.fit(X_train, y_train)
-
-        predictions = model.predict(X_test)
-        # print(predictions, end='\t')
+        model.fit(Standardized_X_train, y_train)
         
-        print(i, model.score(X_test, y_test))
+        print(i, model.score(Standardized_X_test, y_test))
 
-        tests = model.predict(Testingdata.iloc[:, :-1])
+        tests = model.predict(Standardized_Testing)
         print(tests)
         
 if __name__ == "__main__":
