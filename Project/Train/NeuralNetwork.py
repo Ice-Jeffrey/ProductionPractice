@@ -115,38 +115,35 @@ def main():
     # 计算出需要模型的次数
     iter = negative.shape[0] // positive.shape[0]   # iter = 5
 
-    solvers = ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga']
+    for i in range(iter):
+        # 获得需要的数据
+        # data = pd.concat([positive, negative.iloc[i * 228: (i+1)*228, :]], axis=0)
+        data = positive
+        data = shuffle(data)
 
-    for solver in solvers:
-        for i in range(iter):
-            # 获得需要的数据
-            data = pd.concat([positive, negative.iloc[i * 228: (i+1)*228, :]], axis=0)
-            # data = positive
-            data = shuffle(data)
+        # 得到X, y
+        y = data['获奖类别']
+        X = data.iloc[:, :-1]
+        # X = data.iloc[:, :12]
+        # print(X, y)
 
-            # 得到X, y
-            y = data['获奖类别']
-            X = data.iloc[:, :-1]
-            # X = data.iloc[:, :12]
-            # print(X, y)
+        # 分割训练集与测试集
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
 
-            # 分割训练集与测试集
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+        # 进行标准化
+        scaler = StandardScaler().fit(X_train)
+        Standardized_X_train = scaler.transform(X_train)
+        Standardized_X_test = scaler.transform(X_test)
 
-            # 进行标准化
-            scaler = StandardScaler().fit(X_train)
-            Standardized_X_train = scaler.transform(X_train)
-            Standardized_X_test = scaler.transform(X_test)
+        scaler = StandardScaler().fit(Testingdata.iloc[:, :-1])
+        Standardized_Testing = scaler.transform(Testingdata.iloc[:, :-1])
 
-            scaler = StandardScaler().fit(Testingdata.iloc[:, :-1])
-            Standardized_Testing = scaler.transform(Testingdata.iloc[:, :-1])
-
-            # 创建模型
-            with fluid.dygraph.guard():
-                # 我们将会发现，在训练过程中，随着迭代次数的增加，loss会逐渐降低，准确率会逐渐增高
-                model = Model()
-                train(model, Standardized_X_train, y_train)
-                val(model, Standardized_X_test, y_test)
+        # 创建模型
+        with fluid.dygraph.guard():
+            # 我们将会发现，在训练过程中，随着迭代次数的增加，loss会逐渐降低，准确率会逐渐增高
+            model = Model()
+            train(model, Standardized_X_train, y_train)
+            val(model, Standardized_X_test, y_test)
 
                
         
