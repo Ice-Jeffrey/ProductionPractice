@@ -16,7 +16,8 @@ def main():
     paths = ['Data/positive_training.csv', 'Data/negative_training.csv', 'Data/testing_output.csv']
     for _file in paths:
         data = LowerTheDimension(_file)
-        data.to_csv(_file[:-4] + '_ld.csv', index=False)
+        print(data.columns)
+        data.to_csv(_file[:-4] + '_ld.csv', index=False, columns=list(data.columns[:-3])+list(data.columns[-2:])+['获奖类别'])
 
 if __name__ == "__main__":
     main()
