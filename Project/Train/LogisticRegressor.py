@@ -115,14 +115,29 @@ def model_with_ld_positive():
 
 def main():
     model_with_negative()
-    accuracy1, test1 = model_with_only_positive()   
-    accuracy2, test2 = model_with_ld_positive()
 
-    WritePredictions(
-        'Results/LogisticRegressionWithOnlyPositive.csv', 
-        accuracyList=[accuracy1, accuracy2],
-        testList=[test1, test2]
-    ) 
+    list1 = []
+    list2 = []
+    list3 = []
+    list4 = []
+    # 探究降维前后的准确率，多次测量求平均值
+    for i in range(5):
+        print('第', i, '次', end='')
+        accuracy1, test1 = model_with_only_positive()
+        print('第', i, '次', end='')   
+        accuracy2, test2 = model_with_ld_positive()
+
+        list1.append(accuracy1)
+        list2.append(accuracy2)
+        list3.append(test1)
+        list4.append(test2)
+
+    data = pd.DataFrame()
+    data['降维前准确率'] = list1
+    data['降维后准确率'] = list2
+    data['降维前预测值'] = list3
+    data['降维后预测值'] = list4
+    data.to_csv('Results/LogisticRegressionWithOnlyPositive.csv', index=False)
         
 if __name__ == "__main__":
     main()
