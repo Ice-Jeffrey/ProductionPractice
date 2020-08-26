@@ -9,6 +9,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 
 from GetData import *
+from Predict import WritePredictions
 
 def model_with_negative():
     print('带有负样本的模型')
@@ -22,7 +23,8 @@ def model_with_negative():
     # 计算出需要模型的次数
     iter = negative.shape[0] // positive.shape[0]   # iter = 5
 
-    accuracy_list = {}
+    accuracy_list = []
+    test_list = []
     for i in range(iter):
         # 获得需要的数据
         data = pd.concat([positive, negative.iloc[i * 228: (i+1)*228, :]], axis=0)
@@ -41,9 +43,14 @@ def model_with_negative():
         predictions = model.predict(X_test)
 
         test = model.predict(Testingdata.iloc[:, :-1])
+        accuracy = accuracy_score(predictions, y_test)
+        accuracy_list.append(accuracy)
+        test_list.append(test)  
         
         print("第{}个模型，准确率：{}\n预测结果：{}".format(i, accuracy_score(predictions, y_test), test))   
 
+    # 将结果写入文件
+    WritePredictions('Results/SVMResultWithNegative.csv', accuracy_list, test_list)
     print("训练结束\n")
 
 def model_with_only_positive():
@@ -65,23 +72,17 @@ def model_with_only_positive():
     # 分割训练集与测试集
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
 
-    # 进行标准化
-    scaler = StandardScaler().fit(X_train)
-    Standardized_X_train = scaler.transform(X_train)
-    Standardized_X_test = scaler.transform(X_test)
-
-    scaler = StandardScaler().fit(Testingdata.iloc[:, :-1])
-    Standardized_Testing = scaler.transform(Testingdata.iloc[:, :-1])
-
     # 使用SVC模型对训练集进行拟合
     model = SVC(kernel='linear', random_state=1, gamma=0.20, C=0.6)
-    model.fit(Standardized_X_train, y_train)
-    predictions = model.predict(Standardized_X_test)
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
 
-    test = model.predict(Standardized_Testing)
+    test = model.predict(Testingdata.iloc[:, :-1])
     
     print("准确率：{}\n预测结果：{}".format(accuracy_score(predictions, y_test), test)) 
     print("训练结束\n")  
+
+    return accuracy_score(y_test, predictions), test
 
 def model_with_ld_positive():
     print('降维后只有正样本的训练')
@@ -102,28 +103,28 @@ def model_with_ld_positive():
     # 分割训练集与测试集
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
 
-    # 进行标准化
-    scaler = StandardScaler().fit(X_train)
-    Standardized_X_train = scaler.transform(X_train)
-    Standardized_X_test = scaler.transform(X_test)
-
-    scaler = StandardScaler().fit(Testingdata.iloc[:, :-1])
-    Standardized_Testing = scaler.transform(Testingdata.iloc[:, :-1])
-
     # 使用SVC模型对训练集进行拟合
     model = SVC(kernel='linear', random_state=1, gamma=0.20, C=0.6)
-    model.fit(Standardized_X_train, y_train)
-    predictions = model.predict(Standardized_X_test)
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
 
-    test = model.predict(Standardized_Testing)
+    test = model.predict(Testingdata.iloc[:, :-1])
     
     print("准确率：{}\n预测结果：{}".format(accuracy_score(predictions, y_test), test)) 
     print("训练结束\n")  
+    
+    return accuracy_score(y_test, predictions), test
 
 def main():
     model_with_negative()
-    model_with_only_positive()   
-    model_with_ld_positive()
+    accuracy1, test1 = model_with_only_positive()   
+    accuracy2, test2 = model_with_ld_positive()
+
+    WritePredictions(
+        'Results/SVMWithOnlyPositive.csv', 
+        accuracyList=[accuracy1, accuracy2],
+        testList=[test1, test2]
+    ) 
 
 if __name__ == "__main__":
     main()
