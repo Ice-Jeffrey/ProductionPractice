@@ -4,6 +4,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import scale
 
 import paddle.fluid as fluid
 import paddle
@@ -17,7 +18,7 @@ class Model(fluid.dygraph.Layer):
         super(Model, self).__init__()
         self.fc1 = Linear(input_dim=10, output_dim=32, act='relu') # 输入层和隐藏层的连接，隐藏层使用Sigmoid作为激活函数
         self.fc2 = Linear(input_dim=32, output_dim=16, act='relu') # 第一个隐藏层和第二个隐藏层之间的连接
-        self.fc3 = Embedding(input_dim=16, output_dim=num_classes, act='sigmoid') # 隐藏层和输出层的连接，输出层不使用激活函数
+        self.fc3 = Linear(input_dim=16, output_dim=num_classes, act='sigmoid') # 隐藏层和输出层的连接，输出层不使用激活函数
 
     # 网络的前向计算过程
     def forward(self, x):
@@ -74,6 +75,24 @@ def val(model, x_test, y_test):
 
     print("[validation] accuracy: {}".format(np.mean(accuracies)))
 
+    return np.mean(accuracies)
+
+def predict(model, x):
+    model.eval()
+    accuracies = []
+    
+    # 调整输入数据形状和类型
+    x_data = np.array(x, dtype='float32').reshape(-1, x.shape[1])
+    
+    # 将numpy.ndarray转化成Tensor
+    inputs = fluid.dygraph.to_variable(x_data)
+
+    # 计算模型输出
+    logits = model(inputs)
+    pred = fluid.layers.softmax(logits)
+    
+    return pred
+
 
 def getTrainingData():
     # 读入正样本
@@ -101,38 +120,28 @@ def main():
     # 从文件中读入测试集
     Testingdata = getTestingData()
 
-    # 计算出需要模型的次数
-    iter = negative.shape[0] // positive.shape[0]   # iter = 5
-
-    for i in range(iter):
+    for i in range(5):
         # 获得需要的数据
-        # data = pd.concat([positive, negative.iloc[i * 228: (i+1)*228, :]], axis=0)
         data = positive
         data = shuffle(data)
 
         # 得到X, y
         y = data['获奖类别']
         X = data.iloc[:, :-1]
-        # X = data.iloc[:, :12]
-        # print(X, y)
 
         # 分割训练集与测试集
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
-
-        # 进行标准化
-        scaler = StandardScaler().fit(X_train)
-        Standardized_X_train = scaler.transform(X_train)
-        Standardized_X_test = scaler.transform(X_test)
-
-        scaler = StandardScaler().fit(Testingdata.iloc[:, :-1])
-        Standardized_Testing = scaler.transform(Testingdata.iloc[:, :-1])
+        X_train.iloc[:, :-1], X_test.iloc[:, :-1] = scale(X_train.iloc[:, :-1]), scale(X_test.iloc[:, :-1])
+        testing = scale(Testingdata.iloc[:, :-1])
 
         # 创建模型
         with fluid.dygraph.guard():
             # 我们将会发现，在训练过程中，随着迭代次数的增加，loss会逐渐降低，准确率会逐渐增高
             model = Model()
-            train(model, Standardized_X_train, y_train)
-            val(model, Standardized_X_test, y_test)
+            train(model, X_train, y_train)
+            accuracy = val(model, X_test, y_test)
+            test = predict(model, testing)
+            print(test)
 
                
         
