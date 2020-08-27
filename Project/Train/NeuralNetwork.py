@@ -141,7 +141,7 @@ def main():
             train(model, X_train, y_train)
             accuracy = val(model, X_test, y_test)
             test = predict(model, testing)
-            print(test)
+            # print(test)
 
                
         
