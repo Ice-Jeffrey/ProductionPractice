@@ -31,7 +31,7 @@ class Model(fluid.dygraph.Layer):
 def train(model, x_train, y_train):
     print('start training ... ')
     model.train()
-    epoch_num = 600        # 定义训练100轮
+    epoch_num = 600        # 定义训练600轮
     opt = fluid.optimizer.RMSPropOptimizer(learning_rate=0.02, parameter_list=model.parameters()) #定义优化器为Momentum，学习率为0.01
 
     # 由于数据量较小，在训练时不设定batch，直接逐轮训练
