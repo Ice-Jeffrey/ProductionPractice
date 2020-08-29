@@ -25,13 +25,28 @@ data6 = [5, 2, 4, 6, 6, 2, 6, 4, 2, 6, 6, 2, 2, 1, 2, 6, 2, 2, 5, 6, 6, 6, 6, 2,
  7, 5, 6, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 6, 6, 5, 6, 6, 5, 5, 6, 1, 5, 6, 6, 5, 5,
  6, 6, 6, 6, 5]
 
+def function(i):
+    prizes = [
+        '国家级一等奖',
+        '国家级二等奖',
+        '国家级三等奖',
+        '国家级优秀奖',
+        '省部级一等奖',
+        '省部级二等奖',
+        '省部级三等奖',
+        '省部级优秀奖'
+    ]
+
+    return prizes[i]
+
 def main():
-    data = pd.read_csv('F:\Codes\ProductionPractice\Project\Data\\testing_output_ld.csv')
+    data = pd.read_excel('F:/Codes/ProductionPractice/Project/Data/2020年蓝桥杯报名数据.xlsx')
+    # print(data)
     for i in range(len(data1)):
         x = data1[i] + data2[i] + data3[i] + data4[i] + data5[i] + data6[i]
         x = round(x / 6)
-        data.loc[i, '获奖类别'] = x
-    data.to_csv('Predictions/Result.csv', index=False, columns=['学号', '获奖类别'])
+        data.loc[i, '2020年蓝桥杯奖项预测'] = function(x)
+    data.to_csv('Predictions/Result.csv', index=False, encoding='gbk')
 
 if __name__ == "__main__":
     main()
